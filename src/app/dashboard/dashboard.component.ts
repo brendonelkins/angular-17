@@ -4,10 +4,11 @@ import { HeroService } from '../services/hero.service';
 import { RouterModule } from '@angular/router';
 import { MessageService } from '../services/message.service';
 import { CommonModule } from '@angular/common';
+import { HeroSearchComponent } from '../hero-search/hero-search.component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, HeroSearchComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
