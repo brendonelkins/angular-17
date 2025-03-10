@@ -10,8 +10,13 @@ import { HousingService } from '../services/housing.service';
   imports: [CommonModule, HousingLocationComponent],
   template: `
     <section>
-      <form>
-        <input type="text" placeholder="Filter by city" #filter />
+      <form (submit)="$event.preventDefault()">
+        <input
+          type="text"
+          placeholder="Filter by city"
+          #filter
+          (keydown.enter)="filterResults(filter.value)"
+        />
         <button
           class="primary"
           type="button"
@@ -31,15 +36,18 @@ import { HousingService } from '../services/housing.service';
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
-  readonly baseUrl = 'https://angular.io/assets/images/tutorials/faa';
-
   housingLocationList: HousingLocation[] = [];
-
-  housingService: HousingService = inject(HousingService);
 
   filteredLocationList: HousingLocation[] = [];
 
+  constructor(private housingService: HousingService) {
+    this.housingLocationList = this.housingService.getAllHousingLocations();
+    this.filteredLocationList = this.housingLocationList;
+  }
+
+
   filterResults(text: string) {
+    console.log('log', text);
     if (!text) {
       this.filteredLocationList = this.housingLocationList;
       return;
@@ -49,10 +57,5 @@ export class HomeComponent {
       (housingLocation) =>
         housingLocation?.city.toLowerCase().includes(text.toLowerCase())
     );
-  }
-
-  constructor() {
-    this.housingLocationList = this.housingService.getAllHousingLocations();
-    this.filteredLocationList = this.housingLocationList;
   }
 }
